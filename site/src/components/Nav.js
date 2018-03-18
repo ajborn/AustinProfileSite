@@ -16,13 +16,15 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import Toggle from 'material-ui/Toggle';
 import Popover from 'material-ui/Popover';
-import { white } from 'material-ui/styles/colors';
+import { white, black } from 'material-ui/styles/colors';
 
 const style = {
   margin: 12,
 };
+const backgroundColor = {
+  backgroundColor: 'black'
+}
 class Nav extends Component {
-
   state = {
     logged: true,
   };
@@ -69,13 +71,13 @@ class Nav extends Component {
       <nav>
         <AppBar
           title=""
+          style={backgroundColor}
           iconElementLeft={<MainMenu />}
           iconElementRight={
             (isLoggedIn()) ? (<RaisedButton onClick={() => logout()} label="Logout" secondary={true} style={style}></RaisedButton>)
               : (<RaisedButton onClick={() => login()} label="Login" primary={true} style={style}></RaisedButton>)          }
         />
       </nav>
-
     );
   }
 }
