@@ -60,8 +60,8 @@ class Profile extends Component {
                 <div>
                     <Card>
                         <CardHeader title="Austin Born" avatar="images/avatar.jpg" />
-                        <CardMedia>
-                            <img src="images/cardanoWallpaper.png" alt="" />
+                        <CardMedia >
+                            <img src="images/glory-universe-banner.jpg" alt="" />
                         </CardMedia>
                         <CardTitle title="About me" />
                         <CardText>
