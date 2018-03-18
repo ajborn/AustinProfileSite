@@ -11,7 +11,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const Root = () => {
   return (
-    <div className="container">
+    <div>
       <MuiThemeProvider>
         <Router history={browserHistory}>
           <Route path="/" component={Profile} />
