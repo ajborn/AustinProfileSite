@@ -85,5 +85,9 @@ app.get('/api/jokes/celebrity', authCheck, (req,res) => {
   res.json(CelebrityJokes);
 })
 
+app.get('/api/profile/aboutme', (req, res)=>{
+  let AboutMe = [ "I am a software engineer/developer who is currently looking for a job working on desktop or web applications."];
+  res.json(AboutMe);
+})
 app.listen(3333);
 console.log('Listening on localhost:3333');

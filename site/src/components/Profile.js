@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Nav from './Nav';
+import Dialog from './Dialog';
 import { getFoodData } from '../utils/chucknorris-api';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import FontIcon from 'material-ui/FontIcon';
 import ActionAndroid from 'material-ui/svg-icons/action/android';
 import SvgIcon from 'material-ui/SvgIcon';
+import { getAboutMeData } from '../utils/profile-api';
+import { login, logout, isLoggedIn } from '../utils/AuthService';
 
 const GitHubIcon = (props) => (
     <SvgIcon {...props}>
@@ -18,16 +21,17 @@ class Profile extends Component {
 
     constructor() {
         super()
-        this.state = { jokes: [] };
+        this.state = { aboutme: '' };
     }
 
-    getFoodJokes() {
-        getFoodData().then((jokes) => {
-            this.setState({ jokes });
+    getAboutMe() {
+        getAboutMeData().then((aboutme) => {
+            this.setState({ aboutme });
         });
     }
 
     componentDidMount() {
+        this.getAboutMe();
     }
 
     render() {
@@ -46,8 +50,8 @@ class Profile extends Component {
                 opacity: 0,
             },
         };
-        const { jokes } = this.state;
-
+        const { aboutme } = this.state;
+        console.log("aboutme: ", aboutme);
         return (
             <div>
                 <Nav />
@@ -61,7 +65,8 @@ class Profile extends Component {
                         </CardMedia>
                         <CardTitle title="About me" />
                         <CardText>
-                            I am a software engineer/developer who is currently looking for a job working on desktop or web applications.
+                        { (isLoggedIn()) ? aboutme : <Dialog/>}
+                            
                         </CardText>
                         <CardActions>
                             <RaisedButton
@@ -73,6 +78,7 @@ class Profile extends Component {
                                 icon={<GitHubIcon />}
                             />
                         </CardActions>
+                        
                     </Card>
                 </div>
             </div>

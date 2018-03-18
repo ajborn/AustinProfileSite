@@ -16,7 +16,7 @@ class Nav extends Component {
         </div>
         <ul className="nav navbar-nav">
           <li> {
-            (isLoggedIn()) ? <Link to="/">Food Jokes</Link> : '' 
+            (isLoggedIn()) ? <Link to="/foodjokes">Food Jokes</Link> : '' 
           }
           </li>
           <li>
