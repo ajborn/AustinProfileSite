@@ -87,7 +87,7 @@ const MainMenu = (props, context) => (
     {...props}
     iconButtonElement={<IconButton><MenuIcon color={white} /></IconButton>
     }
-    anchorOrigin={{horizontal: 'center', vertical: 'bottom'}}
+    anchorOrigin={{horizontal: 'middle', vertical: 'bottom'}}
     targetOrigin={{horizontal: 'left', vertical: 'top'}}
   >
     <Menu>
