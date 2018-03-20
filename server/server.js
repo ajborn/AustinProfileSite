@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-const twitterAuth = `OAuth oauth_consumer_key="D1X5bwx6tF5rNcC9J6iPDfhqP",oauth_token="4686534691-KcECHY2gBOtIqSAKrCYVFDKpOgkb1yNw5e3CCwk",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1521437993",oauth_nonce="peQkEX9wZZM",oauth_version="1.0",oauth_signature="U%2FG%2BLtMLOWQPUO3tHmwZk0iBrgY%3D"`;
+const twitterAuth = `OAuth oauth_consumer_key="D1X5bwx6tF5rNcC9J6iPDfhqP",oauth_token="4686534691-KcECHY2gBOtIqSAKrCYVFDKpOgkb1yNw5e3CCwk",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1521565574",oauth_nonce="NDxzItrvUoq",oauth_version="1.0",oauth_signature="P5G%2FO8AhUN8U8FlgNlhla%2FpXNF4%3D"`;
 const twitterUrl = `https://api.twitter.com/1.1/users/search.json?q=singer`;
 const authCheck = jwt({
   secret: jwks.expressJwtSecret({
@@ -88,20 +88,12 @@ app.get('/api/jokes/celebrity', authCheck, (req, res) => {
 })
 
 app.get('/api/profile/aboutme', (req, res) => {
-  let AboutMe = ["I am a software engineer/developer who is currently looking for a job working on desktop or web applications. My experience is in .NET, Javascript, ReactJS, and TSQL for my stack.  this website was created to demostrate my basic knowledge and understanding of a ReactJS app using authentication and a WebAPI to return data."];
+  let AboutMe = ["I am a software engineer/developer who is currently looking for a job working on desktop or web applications. My experience is in .NET, Javascript, ReactJS, and TSQL for my stack.  This website was created to demostrate my basic knowledge and understanding of a ReactJS app using authentication and a WebAPI to return data.  My Github link provides my latest projects that I have worked in my spare time. "];
   res.json(AboutMe);
 })
 app.get('/api/twitter/data', async (req, res) => {
   const tData = await getTweetData()
-  try {
-    res.json(tData.data);
-  } catch (err) {
-    console.log(err);
-  }
-})
-app.get('/api/twitter/search/:searchterm', async (req, res) => {
-  var searchterm = req.params.searchterm;
-  const tData = await searchTweetData(searchterm)
+  console.log("tdata: ", tData);
   try {
     res.json(tData.data);
   } catch (err) {
@@ -116,6 +108,16 @@ async function getTweetData() {
     console.log(err);
   }
 }
+app.get('/api/twitter/search/:searchterm', async (req, res) => {
+  var searchterm = req.params.searchterm;
+  const tData = await searchTweetData(searchterm)
+  try {
+    res.json(tData.data);
+  } catch (err) {
+    console.log(err);
+  }
+})
+
 async function searchTweetData(searchTerm) {
   const searchURL = `https://api.twitter.com/1.1/users/search.json?q=`;
   try {

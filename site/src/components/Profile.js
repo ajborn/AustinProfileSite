@@ -24,11 +24,6 @@ class Profile extends Component {
         super()
         this.state = { aboutme: '' };
     }
-    getTwitterData(){
-        getTwitterData().then((data) => {
-            console.log("data: ", data)
-        });
-    }
     getAboutMe() {
         getAboutMeData().then((aboutme) => {
             this.setState({ aboutme });
@@ -56,8 +51,6 @@ class Profile extends Component {
             },
         };
         const { aboutme } = this.state;
-        console.log("aboutme: ", aboutme);
-        this.getTwitterData();
         return (
             <div>
                 <Nav />
@@ -78,10 +71,17 @@ class Profile extends Component {
                             <RaisedButton
                                 href="https://github.com/ajborn?tab=repositories"
                                 target="_blank"
-                                label="Github Link"
+                                label="Github"
                                 primary={true}
                                 style={styles.button}
                                 icon={<GitHubIcon />}
+                            />
+                            <RaisedButton
+                                href="https://www.linkedin.com/in/austin-born-5b353757/"
+                                target="_blank"
+                                label="LinkedIn"
+                                primary={true}
+                                style={styles.button}
                             />
                         </CardActions>
 

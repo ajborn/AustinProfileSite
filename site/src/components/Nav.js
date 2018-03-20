@@ -75,7 +75,7 @@ class Nav extends Component {
           iconElementLeft={<MainMenu />}
           iconElementRight={
             (isLoggedIn()) ? (<RaisedButton onClick={() => logout()} label="Logout" secondary={true} style={style}></RaisedButton>)
-              : (<RaisedButton onClick={() => login()} label="Login" primary={true} style={style}></RaisedButton>)          }
+              : (<RaisedButton onClick={() => login()} label="Login" primary={true} style={style}></RaisedButton>)}
         />
       </nav>
     );
@@ -87,22 +87,25 @@ const MainMenu = (props, context) => (
     {...props}
     iconButtonElement={<IconButton><MenuIcon color={white} /></IconButton>
     }
-    anchorOrigin={{horizontal: 'middle', vertical: 'bottom'}}
-    targetOrigin={{horizontal: 'left', vertical: 'top'}}
+    anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
+    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
   >
     <Menu>
-      <MenuItem primaryText={"Home"} onClick={()=>{
-          window.location.assign('/');
-        }} />
-      {(isLoggedIn()) ? <MenuItem primaryText="FoodJokes" onClick={()=>{
+      <MenuItem primaryText={"Home"} onClick={() => {
+        window.location.assign('/');
+      }} />
+      {(isLoggedIn()) ? <MenuItem primaryText="FoodJokes" onClick={() => {
         window.location.assign('/foodjokes');
       }} />
         : ''}
       {(isLoggedIn()) ?
-        <MenuItem primaryText={"Celebrity Jokes"} onClick={()=>{
+        <MenuItem primaryText={"Celebrity Jokes"} onClick={() => {
           window.location.assign('/special');
-        }}  />
+        }} />
         : ''}
+      <MenuItem primaryText={"TwitterAPI"} onClick={() => {
+        window.location.assign('/twitterapi');
+      }} />
     </Menu>
   </IconMenu>
 

@@ -10,16 +10,17 @@ import RaisedButton from 'material-ui/RaisedButton';
  * You can also close this dialog by clicking outside the dialog, or with the 'Esc' key.
  */
 export default class DialogSimple extends React.Component {
-  state = {
-    open: true,
-  };
+  constructor(props) {
+    super(props)
+    this.state = { open: true, };
+  }
 
   handleOpen = () => {
-    this.setState({open: true});
+    this.setState({ open: true });
   };
 
   handleClose = () => {
-    this.setState({open: false});
+    this.setState({ open: false });
   };
 
   render() {
@@ -31,10 +32,10 @@ export default class DialogSimple extends React.Component {
         onClick={this.handleClose}
       />,
     ];
-    const message = 'To view the about me please login.\r\n The login screen will allow you sign up.';
+    const message = 'To view the about me please login or check the TwitterAPI out in the menu.\r\n The login screen will allow you sign up.';
     return (
       <div>
-        <RaisedButton label="Where is the About Me?" onClick={this.handleOpen} secondary={true}/>
+        <RaisedButton label="Where is the About Me?" onClick={this.handleOpen} secondary={true} />
         <Dialog
           actions={actions}
           modal={false}
