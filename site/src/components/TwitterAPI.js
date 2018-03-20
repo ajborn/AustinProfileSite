@@ -2,32 +2,48 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Nav from './Nav';
 import Dialog from './Dialog';
-import { getTwitterData } from '../utils/twitter-api';
+import { getTwitterData, getTwitterSearchData } from '../utils/twitter-api';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import FontIcon from 'material-ui/FontIcon';
 import ActionAndroid from 'material-ui/svg-icons/action/android';
 import SvgIcon from 'material-ui/SvgIcon';
 import { login, logout, isLoggedIn } from '../utils/AuthService';
+import {
+    Table,
+    TableBody,
+    TableHeader,
+    TableHeaderColumn,
+    TableRow,
+    TableRowColumn,
+} from 'material-ui/Table';
 
 class TwitterAPI extends Component {
 
     constructor() {
         super()
-        this.state = {  };
+        this.state = {
+            searchTerm: "singer",
+            count: 10
+        };
     }
-    getTwitter(){
-       return getTwitterData().then((twitterData) => {
-            this.setState({twitterData});
+    getTwitter() {
+        return getTwitterData().then((twitterData) => {
+            this.setState({ twitterData });
+        });
+    }
+    getTwitterSearch() {
+        if (!this.state.searchTerm) {
+            console.log("Search term was null");
+            return;
+        }
+        getTwitterSearchData(this.state.searchTerm, this.state.count).then((twitterSearchData) => {
+            this.setState({ twitterSearchData });
         });
     }
 
-    getTwitterSearch(){
-
-    }
-
     componentDidMount() {
-        this.getTwitter();
+        this.getTwitterSearch();
     }
 
     render() {
@@ -46,31 +62,39 @@ class TwitterAPI extends Component {
                 opacity: 0,
             },
         };
-        let twitterData = this.state.twitterData;
-        let ids = [];
-        console.log("twitterData: ", twitterData);
-        for (var prop in twitterData) {
-            
-            ids.push(twitterData[prop].id);
+        let twitterSearchData = this.state.twitterSearchData;
+        let mappedTwitterData = [];
+        console.log("twitterSearchData: ", twitterSearchData);
+        for (var prop in twitterSearchData) {
+            mappedTwitterData.push(twitterSearchData[prop]);
         }
-        console.log("ids: ", ids);
+        mappedTwitterData.map((id, index) => (
+            console.log("id: ", id.id)
+        ))
         return (
             <div>
                 <Nav />
 
                 <div className="container">
                     <h2 className="text-center">TwitterAPI Examples</h2>
-                    <hr />
-                    <Card>
-                        <CardHeader title="TwitterAPI" avatar="images/avatar.jpg" />
-                        <CardTitle title="About me" />
-                        <CardText>
-                            {ids}
-                        </CardText>
-                        <CardActions>
-                        </CardActions>
-
-                    </Card>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHeaderColumn>ID</TableHeaderColumn>
+                                <TableHeaderColumn>Name</TableHeaderColumn>
+                                <TableHeaderColumn>Status</TableHeaderColumn>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {mappedTwitterData.map((data, index) => (
+                                <TableRow>
+                                    <TableRowColumn>{data.id}</TableRowColumn>
+                                    <TableRowColumn>{data.name}</TableRowColumn>
+                                    <TableRowColumn>{data.status.text}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
                 </div>
             </div>
         );

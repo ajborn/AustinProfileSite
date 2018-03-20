@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-const twitterAuth = `OAuth oauth_consumer_key="D1X5bwx6tF5rNcC9J6iPDfhqP",oauth_token="4686534691-KcECHY2gBOtIqSAKrCYVFDKpOgkb1yNw5e3CCwk",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1521565574",oauth_nonce="NDxzItrvUoq",oauth_version="1.0",oauth_signature="P5G%2FO8AhUN8U8FlgNlhla%2FpXNF4%3D"`;
+const twitterAuth = `OAuth oauth_consumer_key="D1X5bwx6tF5rNcC9J6iPDfhqP",oauth_token="4686534691-KcECHY2gBOtIqSAKrCYVFDKpOgkb1yNw5e3CCwk",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1521569514",oauth_nonce="WiFKcw7db1p",oauth_version="1.0",oauth_signature="DUgWodV6FembhtOTqJlJWiz%2Bj6M%3D"`;
 const twitterUrl = `https://api.twitter.com/1.1/users/search.json?q=singer`;
 const authCheck = jwt({
   secret: jwks.expressJwtSecret({
@@ -108,9 +108,10 @@ async function getTweetData() {
     console.log(err);
   }
 }
-app.get('/api/twitter/search/:searchterm', async (req, res) => {
+app.get('/api/twitter/search/:searchterm/:count', async (req, res) => {
   var searchterm = req.params.searchterm;
-  const tData = await searchTweetData(searchterm)
+  var count = req.params.count;
+  const tData = await searchTweetData(searchterm, count)
   try {
     res.json(tData.data);
   } catch (err) {
@@ -118,10 +119,10 @@ app.get('/api/twitter/search/:searchterm', async (req, res) => {
   }
 })
 
-async function searchTweetData(searchTerm) {
+async function searchTweetData(searchTerm, count) {
   const searchURL = `https://api.twitter.com/1.1/users/search.json?q=`;
   try {
-    const data = await axios.get(url+searchTerm, { headers: { Authorization: twitterAuth } });
+    const data = await axios.get(searchURL+searchTerm+'&count='+count, { headers: { Authorization: twitterAuth } });
     return data;
   } catch (err) {
     console.log(err);
