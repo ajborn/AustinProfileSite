@@ -6,10 +6,36 @@ const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const oAuth = require('OAuth');
+
+
+
+const twitterKey = "D1X5bwx6tF5rNcC9J6iPDfhqP";
+const twitterSecret = "DPt4rYnVwqtUzFnjSN7zMzrEMmNlRxRgeGNDg2TPkBPmSuQxbr";
+const token = "4686534691-KcECHY2gBOtIqSAKrCYVFDKpOgkb1yNw5e3CCwk";
+const token_secret = "MbKoEKvSMLlCMSsQtxSZwLQul95DH4YDaNeD1Y7PKmwfG"
+const oauth_nonce = "WiFKcw7db1p";
+const oauth_signature = "DUgWodV6FembhtOTqJlJWiz%2Bj6M%3D"
+const oauth_signature_method = "HMAC-SHA1";
+const oauth_timestamp = "1521569514";
+
+const oauth_version = "1.0A";
+
+var tOAuth = new oAuth.OAuth(
+  'https://api.twitter.com/oauth/request_token',
+  'https://api.twitter.com/oauth/access_token',
+  twitterKey,//twitterKey
+  twitterSecret,//twitterSecret
+  oauth_version,
+  true,
+  oauth_signature_method
+);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+
+
 
 const twitterAuth = `OAuth oauth_consumer_key="D1X5bwx6tF5rNcC9J6iPDfhqP",oauth_token="4686534691-KcECHY2gBOtIqSAKrCYVFDKpOgkb1yNw5e3CCwk",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1521569514",oauth_nonce="WiFKcw7db1p",oauth_version="1.0",oauth_signature="DUgWodV6FembhtOTqJlJWiz%2Bj6M%3D"`;
 const twitterUrl = `https://api.twitter.com/1.1/users/search.json?q=singer`;
@@ -108,22 +134,46 @@ async function getTweetData() {
     console.log(err);
   }
 }
+
 app.get('/api/twitter/search/:searchterm/:count', async (req, res) => {
-  var searchterm = req.params.searchterm;
-  var count = req.params.count;
+  const searchterm = req.params.searchterm;
+  const count = req.params.count;
   const tData = await searchTweetData(searchterm, count)
+  
   try {
-    res.json(tData.data);
+    res.json(tData);
   } catch (err) {
     console.log(err);
   }
 })
+// This is isn't declared as `async` because it already returns a promise
+function delay() {
+  // `delay` returns a promise
+  return new Promise(function(resolve, reject) {
+    // Only `delay` is able to resolve or reject the promise
+    setTimeout(function() {
+      resolve(42); // After 3 seconds, resolve the promise with value 42
+    }, 3000);
+  });
+}
 
 async function searchTweetData(searchTerm, count) {
   const searchURL = `https://api.twitter.com/1.1/users/search.json?q=`;
+
   try {
-    const data = await axios.get(searchURL+searchTerm+'&count='+count, { headers: { Authorization: twitterAuth } });
-    return data;
+   await tOAuth.get(
+      searchURL + searchTerm + '&count=' + count,
+      token,
+      token_secret,
+      function (error, data, res) {
+        if (error) console.error("error: ", error);
+        tOAuth.data = data;
+      }
+    );
+    await delay(1000);
+    console.log("tOAuth: ", tOAuth);
+    return tOAuth.data
+    
   } catch (err) {
     console.log(err);
   }

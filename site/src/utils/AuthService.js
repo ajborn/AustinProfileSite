@@ -80,7 +80,6 @@ function getTokenExpirationDate(encodedToken) {
     if (!token.exp) { return null; }
 
     var date = new Date(0);
-    console.log("Date: ", date);
     date.setUTCSeconds(token.exp);
     return date;
 }

@@ -9,6 +9,7 @@ import FontIcon from 'material-ui/FontIcon';
 import ActionAndroid from 'material-ui/svg-icons/action/android';
 import SvgIcon from 'material-ui/SvgIcon';
 import { login, logout, isLoggedIn } from '../utils/AuthService';
+import TextField from 'material-ui/TextField'
 import {
     Table,
     TableBody,
@@ -24,7 +25,8 @@ class TwitterAPI extends Component {
         super()
         this.state = {
             searchTerm: "singer",
-            count: 10
+            count: 10,
+            mappedTwitterData: []
         };
     }
     getTwitter() {
@@ -33,20 +35,33 @@ class TwitterAPI extends Component {
         });
     }
     getTwitterSearch() {
+        console.log("this.state.searchTerm", this.state.searchTerm);
         if (!this.state.searchTerm) {
             console.log("Search term was null");
             return;
         }
         getTwitterSearchData(this.state.searchTerm, this.state.count).then((twitterSearchData) => {
-            this.setState({ twitterSearchData });
+            let mappedTwitterData = [];
+            for (var prop in twitterSearchData) {
+                mappedTwitterData.push(twitterSearchData[prop]);
+            }
+            console.log("twitterSearchData: ", twitterSearchData);
+            this.setState({ mappedTwitterData });
+            return;
         });
     }
+    handleChange = (event) => {
+        this.setState({
+          searchTerm: event.target.value,
+        });
+      };
 
     componentDidMount() {
-        this.getTwitterSearch();
+        //this.getTwitterSearch();
     }
 
     render() {
+        let mappedTwitterData = this.state.mappedTwitterData
         const styles = {
             button: {
                 margin: 12,
@@ -61,22 +76,33 @@ class TwitterAPI extends Component {
                 width: '100%',
                 opacity: 0,
             },
+            textField: {
+                margin: 12,
+                position: 'relative'
+            }
         };
-        let twitterSearchData = this.state.twitterSearchData;
-        let mappedTwitterData = [];
-        console.log("twitterSearchData: ", twitterSearchData);
-        for (var prop in twitterSearchData) {
-            mappedTwitterData.push(twitterSearchData[prop]);
-        }
-        mappedTwitterData.map((id, index) => (
-            console.log("id: ", id.id)
-        ))
+
         return (
             <div>
                 <Nav />
 
                 <div className="container">
                     <h2 className="text-center">TwitterAPI Examples</h2>
+                    <span>
+                        <TextField
+                            name="searchText"
+                            style={styles.textField}
+                            value={this.state.searchTerm}
+                            onChange={this.handleChange}
+                        />
+                        <RaisedButton
+                            target="_blank"
+                            label="Search Twitter Users"
+                            primary={true}
+                            style={styles.button}
+                            onClick={()=>this.getTwitterSearch()}
+                        />
+                    </span>
                     <Table>
                         <TableHeader>
                             <TableRow>
