@@ -119,7 +119,6 @@ app.get('/api/profile/aboutme', (req, res) => {
 })
 app.get('/api/twitter/data', async (req, res) => {
   const tData = await getTweetData()
-  console.log("tdata: ", tData);
   try {
     res.json(tData.data);
   } catch (err) {
@@ -135,10 +134,12 @@ async function getTweetData() {
   }
 }
 
-app.get('/api/twitter/search/:searchterm/:count', async (req, res) => {
-  const searchterm = req.params.searchterm;
-  const count = req.params.count;
-  const tData = await searchTweetData(searchterm, count)
+app.get('/api/twitter/search/:searchterm/:page/:count/', async (req, res) => {
+  const searchterm = req.params.searchterm,
+        page = req.params.page,
+        count = req.params.count
+
+  const tData = await searchTweetData(searchterm, page, count)
   
   try {
     res.json(tData);
@@ -153,16 +154,16 @@ function delay() {
     // Only `delay` is able to resolve or reject the promise
     setTimeout(function() {
       resolve(42); // After 3 seconds, resolve the promise with value 42
-    }, 3000);
+    }, 1000);
   });
 }
 
-async function searchTweetData(searchTerm, count) {
+async function searchTweetData(searchTerm, page, count) {
   const searchURL = `https://api.twitter.com/1.1/users/search.json?q=`;
-
+  console.log("page: ", page);
   try {
    await tOAuth.get(
-      searchURL + searchTerm + '&count=' + count,
+      searchURL + searchTerm + '&page=' + page +  '&count=' + count,
       token,
       token_secret,
       function (error, data, res) {
@@ -171,8 +172,7 @@ async function searchTweetData(searchTerm, count) {
       }
     );
     await delay(1000);
-    console.log("tOAuth: ", tOAuth);
-    return tOAuth.data
+    return JSON.parse(tOAuth.data)
     
   } catch (err) {
     console.log(err);

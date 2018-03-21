@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Avatar from 'material-ui/Avatar';
 import { Link } from 'react-router';
 import Nav from './Nav';
 import Dialog from './Dialog';
@@ -24,9 +25,10 @@ class TwitterAPI extends Component {
     constructor() {
         super()
         this.state = {
-            searchTerm: "singer",
-            count: 10,
-            mappedTwitterData: []
+            mappedTwitterData: [],
+            searchTerm: null,
+            maxResults: null,
+            page: 1
         };
     }
     getTwitter() {
@@ -34,28 +36,47 @@ class TwitterAPI extends Component {
             this.setState({ twitterData });
         });
     }
-    getTwitterSearch() {
+    getTwitterSearch(nextPage) {
         console.log("this.state.searchTerm", this.state.searchTerm);
         if (!this.state.searchTerm) {
             console.log("Search term was null");
             return;
         }
-        getTwitterSearchData(this.state.searchTerm, this.state.count).then((twitterSearchData) => {
+
+        let maxResults = this.state.maxResults == null ? 0 : this.state.maxResults
+        let page = !nextPage ? this.state.page : nextPage;
+        getTwitterSearchData(this.state.searchTerm, page, maxResults).then((twitterSearchData) => {
             let mappedTwitterData = [];
             for (var prop in twitterSearchData) {
                 mappedTwitterData.push(twitterSearchData[prop]);
             }
+            console.log("this.state.page: ", this.state.page);
             console.log("twitterSearchData: ", twitterSearchData);
             this.setState({ mappedTwitterData });
             return;
         });
     }
-    handleChange = (event) => {
-        this.setState({
-          searchTerm: event.target.value,
-        });
-      };
+    searchForMoreUsers() {
+        let page = this.state.page + 1;
+        this.getTwitterSearch(page);
+        this.setState({ page });
+    }
+    back() {
+        let page = this.state.page > 1 ? this.state.page - 1 : this.state.page
+        this.getTwitterSearch(page);
+        this.setState({ page });
 
+    }
+    handleSearchTermChange = (event) => {
+        this.setState({
+            searchTerm: event.target.value,
+        });
+    };
+    handleMaxResultsChange = (event) => {
+        this.setState({
+            maxResults: event.target.value,
+        });
+    };
     componentDidMount() {
         //this.getTwitterSearch();
     }
@@ -78,6 +99,7 @@ class TwitterAPI extends Component {
             },
             textField: {
                 margin: 12,
+                marginLeft: 18,
                 position: 'relative'
             }
         };
@@ -93,34 +115,58 @@ class TwitterAPI extends Component {
                             name="searchText"
                             style={styles.textField}
                             value={this.state.searchTerm}
-                            onChange={this.handleChange}
+                            onChange={this.handleSearchTermChange}
+                            hintText="Search word"
+                        />
+                        <TextField
+                            name="maxResults"
+                            style={styles.textField}
+                            value={this.state.maxResults}
+                            onChange={this.handleMaxResultsChange}
+                            hintText="Max Results"
                         />
                         <RaisedButton
                             target="_blank"
                             label="Search Twitter Users"
                             primary={true}
                             style={styles.button}
-                            onClick={()=>this.getTwitterSearch()}
+                            onClick={() => this.getTwitterSearch()}
                         />
                     </span>
                     <Table>
                         <TableHeader>
                             <TableRow>
                                 <TableHeaderColumn>ID</TableHeaderColumn>
+                                <TableHeaderColumn>Profile Image</TableHeaderColumn>
                                 <TableHeaderColumn>Name</TableHeaderColumn>
-                                <TableHeaderColumn>Status</TableHeaderColumn>
+                                <TableHeaderColumn>Latest Tweet</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {mappedTwitterData.map((data, index) => (
                                 <TableRow>
-                                    <TableRowColumn>{data.id}</TableRowColumn>
+                                    <TableRowColumn>{index}</TableRowColumn>
+                                    <TableRowColumn>{<img src={data.profile_image_url} />}</TableRowColumn>
                                     <TableRowColumn>{data.name}</TableRowColumn>
-                                    <TableRowColumn>{data.status.text}</TableRowColumn>
+                                    <TableRowColumn>{!data.status ? '' : data.status.text}</TableRowColumn>
                                 </TableRow>
                             ))}
                         </TableBody>
-                    </Table>
+                    </Table><br />
+                    <RaisedButton
+                        target="_blank"
+                        label="Back"
+                        primary={true}
+                        style={styles.button}
+                        onClick={() => this.back()}
+                    />
+                    <RaisedButton
+                        target="_blank"
+                        label="Search more"
+                        primary={true}
+                        style={styles.button}
+                        onClick={() => this.searchForMoreUsers()}
+                    />
                 </div>
             </div>
         );

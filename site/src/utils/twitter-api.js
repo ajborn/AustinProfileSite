@@ -10,7 +10,7 @@ function getTwitterData() {
   return axios.get(url).then(response => response.data);
 }
 
-function getTwitterSearchData(searchterm, count) {
-  const url = `${BASE_URL}/api/twitter/search/`+searchterm+'/'+count;
+function getTwitterSearchData(searchterm, page, count) {
+  const url = `${BASE_URL}/api/twitter/search/`+searchterm+'/'+page+'/'+count;
   return axios.get(url).then(response => response.data);
 }
