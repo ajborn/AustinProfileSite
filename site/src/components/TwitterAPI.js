@@ -43,8 +43,12 @@ class TwitterAPI extends Component {
             return;
         }
 
-        let maxResults = this.state.maxResults == null ? 0 : this.state.maxResults
-        let page = !nextPage ? this.state.page : nextPage;
+        let maxResults = this.state.maxResults == null ? 20 : this.state.maxResults
+        let page = nextPage;
+        if(!nextPage){
+            page = 1;
+            this.resetPageCount();
+        }
         getTwitterSearchData(this.state.searchTerm, page, maxResults).then((twitterSearchData) => {
             let mappedTwitterData = [];
             for (var prop in twitterSearchData) {
@@ -60,6 +64,9 @@ class TwitterAPI extends Component {
         let page = this.state.page + 1;
         this.getTwitterSearch(page);
         this.setState({ page });
+    }
+    resetPageCount(){
+        this.setState({ page: 1 });
     }
     back() {
         let page = this.state.page > 1 ? this.state.page - 1 : this.state.page
@@ -145,7 +152,7 @@ class TwitterAPI extends Component {
                         <TableBody>
                             {mappedTwitterData.map((data, index) => (
                                 <TableRow>
-                                    <TableRowColumn>{index}</TableRowColumn>
+                                    <TableRowColumn>{data.id}</TableRowColumn>
                                     <TableRowColumn>{<img src={data.profile_image_url} />}</TableRowColumn>
                                     <TableRowColumn>{data.name}</TableRowColumn>
                                     <TableRowColumn>{!data.status ? '' : data.status.text}</TableRowColumn>

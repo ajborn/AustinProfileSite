@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { login, logout, isLoggedIn } from '../utils/AuthService';
 import '../App.css';
-import PopoverMenu from './PopoverMenu';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import AppBar from 'material-ui/AppBar';
@@ -94,18 +93,11 @@ const MainMenu = (props, context) => (
       <MenuItem primaryText={"Home"} onClick={() => {
         window.location.assign('/');
       }} />
-      {(isLoggedIn()) ? <MenuItem primaryText="FoodJokes" onClick={() => {
-        window.location.assign('/foodjokes');
-      }} />
-        : ''}
       {(isLoggedIn()) ?
-        <MenuItem primaryText={"Celebrity Jokes"} onClick={() => {
-          window.location.assign('/special');
+        <MenuItem primaryText={"TwitterAPI"} onClick={() => {
+          window.location.assign('/twitterapi');
         }} />
         : ''}
-      <MenuItem primaryText={"TwitterAPI"} onClick={() => {
-        window.location.assign('/twitterapi');
-      }} />
     </Menu>
   </IconMenu>
 

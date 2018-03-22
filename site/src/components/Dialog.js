@@ -3,12 +3,6 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
-/**
- * Dialog with action buttons. The actions are passed in as an array of React objects,
- * in this example [FlatButtons](/#/components/flat-button).
- *
- * You can also close this dialog by clicking outside the dialog, or with the 'Esc' key.
- */
 export default class DialogSimple extends React.Component {
   constructor(props) {
     super(props)
@@ -32,7 +26,7 @@ export default class DialogSimple extends React.Component {
         onClick={this.handleClose}
       />,
     ];
-    const message = 'To view the about me please login or check the TwitterAPI out in the menu.\r\n The login screen will allow you sign up.';
+    
     return (
       <div>
         <RaisedButton label="Where is the About Me?" onClick={this.handleOpen} secondary={true} />
@@ -42,7 +36,7 @@ export default class DialogSimple extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          {message}
+          {this.props.message}
         </Dialog>
       </div>
     );
