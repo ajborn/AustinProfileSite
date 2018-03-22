@@ -65,7 +65,7 @@ class Profile extends Component {
                         </CardMedia>
                         <CardTitle title="About me" />
                         <CardText>
-                            {(isLoggedIn()) ? aboutme : <Dialog message={dialogMessage} />}
+                            {(isLoggedIn()) ? aboutme : <Dialog label="Where is the About Me?" message={dialogMessage} />}
                         </CardText>
                         <CardActions>
                             <RaisedButton

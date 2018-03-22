@@ -1,2 +1,4 @@
 ./site/node_modules
 ./src/node_modules
+./src/package-lock.json
+./site/package-lock.json

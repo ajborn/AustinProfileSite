@@ -29,7 +29,7 @@ export default class DialogSimple extends React.Component {
     
     return (
       <div>
-        <RaisedButton label="Where is the About Me?" onClick={this.handleOpen} secondary={true} />
+        <RaisedButton label={this.props.label} onClick={this.handleOpen} secondary={true} />
         <Dialog
           actions={actions}
           modal={false}
