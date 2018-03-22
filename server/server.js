@@ -171,7 +171,7 @@ async function searchTweetData(searchTerm, page, count) {
         tOAuth.data = data;
       }
     );
-    await delay(1000);
+    await delay(2000);
     return JSON.parse(tOAuth.data)
     
   } catch (err) {

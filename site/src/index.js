@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Callback from './components/Callback';
 import CelebrityJokes from './components/CelebrityJokes';
 import FoodJokes from './components/FoodJokes';
 import Profile from './components/Profile';
@@ -18,6 +19,7 @@ const Root = () => {
           <Route path="/foodjokes" component={FoodJokes} onEnter={requireAuth} />
           <Route path="/special" component={CelebrityJokes} onEnter={requireAuth} />
           <Route path="/twitterapi" component={TwitterAPI}  />
+          <Route path="/callback" component={Callback}  />
         </Router>
       </MuiThemeProvider>
     </div>
