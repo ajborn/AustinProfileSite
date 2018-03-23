@@ -1,4 +1,4 @@
-./site/node_modules
-./src/node_modules
-./src/package-lock.json
-./site/package-lock.json
+./AustinsProfileApp/node_modules
+./AustinsProfileServer/node_modules
+./AustinsProfileServer/package-lock.json
+./AustinsProfileApp/package-lock.json
